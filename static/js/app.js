@@ -125,6 +125,10 @@ async function btnRun(){
 
 async function btnLoad(){
     var git=document.getElementById("txtGit").value;
+    if (git.toLowerCase().startsWith("https://github.com/"))
+    {
+        git=git.replace("https://github.com/","");
+    }
 
     Message("Getting files from github");
     //GET FILES
