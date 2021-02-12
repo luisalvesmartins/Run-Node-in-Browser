@@ -1,6 +1,6 @@
 var fileList=[];
 var expandedList=[];
-const { fs, run } = window.nodebowl;
+const { fs, vol, run } = window.nodebowl;
 
 (function(){
     var _privateLog = console.log;
@@ -38,7 +38,8 @@ function dispFolder(folder){
     var s="";
     var p=folder.lastIndexOf("/");
     var prev=folder.substr(0,p);
-    s+=`<div style='color:blue' onclick="dispFolder('${prev}')">up ... </div>`;
+    if (p>=0)
+        s+=`<div style='color:blue' onclick="dispFolder('${prev}')">... up</div>`;
     for (let index = 0; index < l.length; index++) {
         const r = l[index];
         if (r.mode==16895)
@@ -49,7 +50,11 @@ function dispFolder(folder){
     document.getElementById("fsList").innerHTML=s;
 }
 
+
 async function btnLoadFiles(){
+    vol.reset();
+    document.getElementById("divConsole").innerHTML="";
+
     Message("Loading Git files");
     for(let n=0;n<fileList.length;n++)
     {
@@ -68,10 +73,19 @@ async function btnLoadFiles(){
     for(let n=0;n<expandedList.length;n++)
     {
         let ex=expandedList[n];
-        // console.log(ex.name)
-        // console.log(ex.tarball)
 
-        fs.mkdirSync("/node_modules/" + ex.name);
+        var tree=ex.name.split('/');
+        var s="/node_modules";
+        for(let i=0;i<tree.length;i++)
+        {
+            s+="/" + tree[i];
+            try {
+                fs.mkdirSync(s);
+            } catch (error) {
+                //duplicate dir
+            }
+        }
+
 
         FF=await fetch("/getNPM?" + ex.tarball);
         var decodedData=await FF.text();
@@ -97,7 +111,11 @@ async function btnLoadFiles(){
 
 async function btnRun(){
     var s=document.getElementById("selStart").value;
-    run(s);
+    try {
+        run(s);
+    } catch (error) {
+        document.getElementById("divConsole").innerHTML=error;
+    }
     // run('index.js', {
     //     env: {
     //         NODE_ENV: 'dev'

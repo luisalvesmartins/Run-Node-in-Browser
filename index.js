@@ -34,26 +34,31 @@ http.createServer(async function (req, res) {
         var url=u.substr(8);
         
         var files=[];
-        var fe=await fetch(url);
-        var readStream=await fe.arrayBuffer();
+        console.log("Getting " + url)
+        try {
+            var fe=await fetch(url).catch(err=>{console.log(error);res.end();return});
+            var readStream=await fe.arrayBuffer();
     
-        var result=await zlibGunzip(readStream);
+            //TO HANDLE INVALID TARS
+            var result=await zlibGunzip(readStream);
     
-        const readStream2 = Readable.from(await result.toString())
-    
-        var memoryFileSystem=await untarToMemory(readStream2);
-            
-        for (const file in memoryFileSystem.data.package) {
-            if (memoryFileSystem.data.package.hasOwnProperty.call(memoryFileSystem.data.package, file)) {
-                const element = memoryFileSystem.data.package[file];
-                if (file!=""){
-                    //if (file.toLowerCase().endsWith(".js"))
-                    files.push({
-                        file:file,
-                        content:element.toString()
-                    })                            
+            const readStream2 = Readable.from(await result.toString())
+        
+            var memoryFileSystem=await untarToMemory(readStream2);
+                
+            for (const file in memoryFileSystem.data.package) {
+                if (memoryFileSystem.data.package.hasOwnProperty.call(memoryFileSystem.data.package, file)) {
+                    const element = memoryFileSystem.data.package[file];
+                    if (file!=""){
+                        //if (file.toLowerCase().endsWith(".js"))
+                        files.push({
+                            file:file,
+                            content:element.toString()
+                        })                            
+                    }
                 }
             }
+        } catch (error) {
         }
         res.write(JSON.stringify(files));
         res.end();
