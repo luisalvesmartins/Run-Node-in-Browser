@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RUNIB</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="js/getgit.js"></script>
+    <script src="js/getnpm.js"></script>
+    <script src="js/nodebowl.js"></script>
+    <script src="js/app.js"></script>
+</head>
+<body>
+    <h1>RUNIB - Run Node In Browser</h1>
+
+    <div id=divMessage></div>
+
+    <h2>GitHub Username/Project</h2>
+    <div><input style="width:95%" type="text" id=txtGit value="luisalvesmartins/node-sample"></div>
+    <div><button onclick="btnLoad()">1. LOAD PROJECT FROM GIT AND ALL NPM DEPENDENCIES</button></div>
+
+
+    <h2>Files</h2>
+
+    <div id=divPackageJson></div>
+
+    <h2>FS Content</h2>
+    <div style="display:flex">
+        <div class=box>
+            <div id=fsList></div>
+        </div>
+        <div class=box>
+            <div id=divShow>Click on a file to see the content</div>
+        </div>
+    </div>
+
+    <h2>START UP FILE</h2>
+    <SELECT id="selStart"></SELECT>
+    <div><button onclick="btnRun()">2. EXECUTE THE MODULE</button></div>
+
+    <h2>Console Output</h2>
+    <div id="divConsole"></div>
+    
+    <script>window.onload=runAll;</script>
+</body>
+</html>

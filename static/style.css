@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+button {
+    margin-top:2px;
+}
+H2{
+    font-size:10pt;
+    font-weight: bold;
+}
+#divMessage {
+    padding:1px;
+}
+#divConsole {
+    font-size:10pt;
+    background-color: antiquewhite;
+    border:1px solid;
+    padding:1px;
+}
+#fsList{
+    cursor: pointer;
+}
+.red{
+    color:"red";
+}
+.box{
+    border:1px solid gray;
+    height:150px;
+    overflow: auto;
+    flex:1;
+}
+.box>div{
+    font-size: 8pt;
+    padding-left:2px;
+    padding-top:2px;
+}
